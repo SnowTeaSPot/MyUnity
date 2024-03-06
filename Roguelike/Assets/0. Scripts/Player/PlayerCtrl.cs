@@ -6,189 +6,146 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerCtrl : MonoBehaviour
+namespace Roguelike.Contents
 {
-    [SerializeField] float speed;
-    [SerializeField] float maxSpeed;
-    [SerializeField] float jumpPower;
-    [SerializeField] float rigvely;
-    SpriteRenderer renderer;
-    Animator anim;
-    Rigidbody2D rig;
-    private bool PisGround = true;
-    private bool PisJump = false;
-    private int JumpCount = 0;
-    private
+    using State = Utill.Define.PlayerState;
 
-    enum PlayerState
+    public class PlayerCtrl : MonoBehaviour
     {
-        isIdle,
-        isFallandGround,
-        isWalk,
-        isSlide,
-        isJump,
-        isFalling,
-        isAttack
-    }
+        [SerializeField] float moveSpeed;
+        [SerializeField] float maxSpeed;
+        [SerializeField] float jumpPower;
+        [SerializeField] float rigvely;
+        SpriteRenderer ren;
+        Animator anim;
+        Rigidbody2D rig;
+        private bool PisGround = true;
+        private bool PisJump = false;
+        private int JumpCount = 0;
+        private int animState;
+        public State State { get; set; }
 
-    PlayerState CurrState = PlayerState.isIdle;
-
-    void Start()
-    {
-        rig = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
-        renderer = GetComponentInChildren<SpriteRenderer>();
-    }
-
-    void FixedUpdate()
-    {
-        float x = Input.GetAxis("Horizontal");
-        rig.velocity = new Vector2(x * speed, rig.velocity.y);
-
-        if (x > 0)
+        void Start()
         {
-            renderer.flipX = false;
+            rig = GetComponentInChildren<Rigidbody2D>();
+            anim = GetComponentInChildren<Animator>();
+            ren = GetComponentInChildren<SpriteRenderer>();
+            animState = Animator.StringToHash("state");
         }
-        if (x < 0)
+
+        void FixedUpdate()
         {
-            renderer.flipX = true;
+
         }
-    }
 
-    void Update()
-    {
-        PlayerMaxSpeed();
-        SetAnim();
-        //StartCoroutine(IsPlayerDead());
-        //if(state == PlayerState.IsDead)
-        //StopCoroutine(IsPlayerDead());
-        rigvely = rig.velocity.y;
-    }
-
-    void PlayerMaxSpeed()
-    {
-        //속도 제한
+        void Update()
         {
-            if (rig.velocity.x > maxSpeed)
+            PlayerMovement();
+            PlayerJump();
+        }
+
+        public void SetState(State state)
+        {
+            State = state;
+            anim.SetInteger(animState, (int)state);
+            switch (state)
             {
-                rig.velocity = new Vector2(maxSpeed, rig.velocity.y);
-            } else if (rig.velocity.x < -maxSpeed)
-            {
-                rig.velocity = new Vector2(-maxSpeed, rig.velocity.y);
+                case State.isIdle:
+
+                    break;
+
+                case State.isFallandGround:
+
+                    break;
+
+                case State.isWalk:
+
+                    break;
+
+                case State.isSlide:
+
+                    break;
+
+                case State.isJump:
+
+                    break;
+
+                case State.isFalling:
+
+                    break;
+
+                case State.isAttack:
+
+                    break;
+
             }
         }
-    }
 
-    void SetAnim()
-    {
-        switch (CurrState)
+        void PlayerMovement()
         {
-            case PlayerState.isIdle:
-                if (CurrState == PlayerState.isIdle)
-                    break;
-                SetState(0);
-                break;
-            case PlayerState.isFallandGround:
-                if (CurrState == PlayerState.isFallandGround)
-                    break;
-                SetState(1);
-                break;
-            case PlayerState.isWalk:
-                if (CurrState == PlayerState.isWalk)
-                    break;
-                SetState(2);
-                break;
-            case PlayerState.isSlide:
-                if (CurrState == PlayerState.isSlide)
-                    break;
-                SetState(3);
-                break;
-            case PlayerState.isJump:
-                if (CurrState == PlayerState.isJump)
-                    break;
-                SetState(4);
-                break;
-            case PlayerState.isFalling:
-                if (CurrState == PlayerState.isFalling)
-                    break;
-                SetState(5);
-                break;
-            case PlayerState.isAttack:
-                if (CurrState == PlayerState.isAttack)
-                    break;
-                break;
-            default:
-                break;
-        }
-    }
-
-    void SetState(int index)
-    {
-        //걷는 애니메이션 관리
-        if (index == 0)
-        {
-            if (rig.velocity.x == 0 && rig.velocity.y == 0 && PisGround && PisJump )
+            float x = Input.GetAxis("Horizontal");
+            rig.velocity = new Vector2(x * moveSpeed, rig.velocity.y);
+            
             {
-                anim.Play("Idle");
+                if (x > 0)
+                {
+                    ren.flipX = false;
+                }
+                if (x < 0)
+                {
+                    ren.flipX = true;
+                }
+            }
+
+            if (x != 0)
+            {
+                SetState(State.isWalk);
+            }
+
+            if (x != 0 && Input.GetKey(KeyCode.LeftShift))
+            {
+                SetState(State.isSlide);
+            }
+
+            if (x == 0 && State != State.isFallandGround)
+            {
+                SetState(State.isIdle);
             }
         }
-        //착지 애니메이션 관리
-        else if (index == 1)
+
+        void PlayerJump()
         {
-            if (!PisJump && PisGround && rig.velocity.y == 0)
-            {
-                anim.Play("FallandGround");
-            }
-        } else if (index == 2)
-        {
-            if (rig.velocity.x != 0 && PisGround)
-            {
-                anim.Play("Walk");
-            }
-        } else if (index == 3)
-        {
-            if (Input.GetKey(KeyCode.LeftShift) && CurrState == PlayerState.isWalk && PisGround == true)
+            if (Input.GetKeyDown(KeyCode.W))
             {
                 rig.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-                maxSpeed = 30;
-                anim.Play("Slide");
             }
-        } else if (index == 4)
-        {
-            if (Input.GetKeyDown(KeyCode.W) && PisGround == true)
+
+            if( rig.velocity.y > 0 ) 
             {
-                PisJump = true;
-                anim.Play("Jump");
+                SetState(State.isJump);
             }
-        } else if (index == 5)
-        {
-            if (PisJump && !PisGround && CurrState == PlayerState.isJump && rig.velocity.y < 0)
+            if (rig.velocity.y < 0 )
             {
-                anim.Play("Fall");
+                SetState(State.isFalling);
             }
         }
-    }
 
-    void PlayerAttackRange()
-    {
 
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.CompareTag("Platform"))
+        void OnCollisionEnter2D(Collision2D collision)
         {
-            PisGround = true;
-            PisJump = false;
+            if (collision.collider.CompareTag("Platform"))
+            {
+                PisJump = false;
+                PisGround = true;
+            }
         }
-    }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.collider.CompareTag("Platform"))
+        void OnCollisionExit2D(Collision2D collision)
         {
-            PisGround = false;
-            anim.SetBool("IsGround", PisGround);
+            if (collision.collider.CompareTag("Platform"))
+            {
+                PisGround = false;
+            }
         }
     }
 }
