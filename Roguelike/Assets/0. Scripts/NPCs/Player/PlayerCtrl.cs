@@ -55,10 +55,6 @@ namespace Roguelike.Contents
 
                     break;
 
-                case State.isFallandGround:
-
-                    break;
-
                 case State.isWalk:
 
                     break;
@@ -117,18 +113,23 @@ namespace Roguelike.Contents
 
         void PlayerJump()
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W) && PisGround == true)
             {
                 rig.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+                PisGround = false;
             }
 
             if( rig.velocity.y > 0 ) 
             {
                 SetState(State.isJump);
             }
-            if (rig.velocity.y < 0 )
+            else if (rig.velocity.y < 0 )
             {
                 SetState(State.isFalling);
+            }
+            else
+            {
+                PisGround = true;
             }
         }
 
@@ -139,6 +140,14 @@ namespace Roguelike.Contents
             {
                 PisJump = false;
                 PisGround = true;
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.collider.CompareTag("Enemy"))
+            {
+                SceneManager.LoadScene("FightScene");
             }
         }
 
