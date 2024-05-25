@@ -7,12 +7,19 @@ namespace Roguelike.Utill
         public enum PlayerState
         {
             isIdle,
-            isFallandGround,
             isWalk,
             isSlide,
             isJump,
             isFalling,
             isAttack
+        }
+
+        public enum LanternState
+        {
+            isFullOil,
+            isHalfOil,
+            isLowOil,
+            isNoneOil
         }
     }
 }

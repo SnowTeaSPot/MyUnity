@@ -36,13 +36,12 @@ namespace Roguelike.Contents
 
         void FixedUpdate()
         {
-
+            PlayerMovement();
         }
 
         void Update()
         {
-            PlayerMovement();
-            PlayerJump();
+        PlayerJump();
         }
 
         public void SetState(State state)
@@ -81,6 +80,7 @@ namespace Roguelike.Contents
         void PlayerMovement()
         {
             float x = Input.GetAxis("Horizontal");
+            rigvely = x;
             realSpeed = x * moveSpeed;
             rig.velocity = new Vector2(realSpeed, rig.velocity.y);
             
@@ -95,7 +95,7 @@ namespace Roguelike.Contents
                 }
             }
 
-            if (x != 0)
+            if (x != 0 && PisGround)
             {
                 SetState(State.isWalk);
             }
@@ -105,7 +105,7 @@ namespace Roguelike.Contents
                 SetState(State.isSlide);
             }
 
-            if (x == 0 && State != State.isFallandGround)
+            if (x == 0 && PisGround == true)
             {
                 SetState(State.isIdle);
             }
@@ -117,20 +117,16 @@ namespace Roguelike.Contents
             {
                 rig.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
                 PisGround = false;
-            }
-
-            if( rig.velocity.y > 0 ) 
-            {
                 SetState(State.isJump);
             }
-            else if (rig.velocity.y < 0 )
+            
+            if (rig.velocity.y < 0 )
             {
                 SetState(State.isFalling);
             }
-            else
-            {
+
+            if (rig.velocity.y == 0)
                 PisGround = true;
-            }
         }
 
 
