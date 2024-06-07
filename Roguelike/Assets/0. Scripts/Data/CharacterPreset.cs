@@ -10,7 +10,7 @@ public class CharacterData
     public string[] jobs = { "Knight", "Thief", "Archemist", "Priest" };
     public class Knight
     {
-        //╫╨евюлем╫╨//
+        //О©╫О©╫О©╫О©╫О©╫О©╫О©╫м╫О©╫//
         public int accuracy_stat = 100;
         public int speed_stat = 10;
         public int crit_stat = 15;
@@ -21,7 +21,7 @@ public class CharacterData
 
     public class Thief
     {
-        //╫╨евюлем╫╨//
+        //О©╫О©╫О©╫О©╫О©╫О©╫О©╫м╫О©╫//
         public int accuracy_stat = 100;
         public int speed_stat = 16;
         public int crit_stat = 25;
@@ -32,7 +32,7 @@ public class CharacterData
 
     public class Archemist
     {
-        //╫╨евюлем╫╨//
+        //О©╫О©╫О©╫О©╫О©╫О©╫О©╫м╫О©╫//
         public int accuracy_stat = 50;
         public int speed_stat = 13;
         public int crit_stat = 10;
@@ -43,7 +43,7 @@ public class CharacterData
 
     public class Priest
     {
-        //╫╨евюлем╫╨//
+        //О©╫О©╫О©╫О©╫О©╫О©╫О©╫м╫О©╫//
         public int accuracy_stat = 80;
         public int speed_stat = 7;
         public int crit_stat = 10;
