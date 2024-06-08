@@ -8,7 +8,8 @@ namespace Roguelike.Contents
     using State = Utill.Define.LanternState;
     public class LanternAnim : MonoBehaviour
     {
-        public int oil = 100;
+        public int oil;
+        public float oilDecreaseTime = 0;
         private int lanternAnimState;
         Animator anim;
         public State lanternState { get; set; }
@@ -17,7 +18,11 @@ namespace Roguelike.Contents
         {
             anim = GetComponent<Animator>();
             lanternAnimState = Animator.StringToHash("state");
-            StartCoroutine(LanternUpdate());
+        }
+
+        void Update()
+        {
+            LanternOilDecrease();
         }
 
         public void SetLanternState(State state)
@@ -46,7 +51,6 @@ namespace Roguelike.Contents
 
         public void LanternControl()
         {
-            Debug.Log("나오고 있습니다.");
             if (oil >= 75)
             {
                 SetLanternState(State.isFullOil);
@@ -65,12 +69,19 @@ namespace Roguelike.Contents
             }
         }
 
-        private IEnumerator LanternUpdate()
+        public void LanternOilDecrease()
         {
-            while (true)
+            if (oil > 0)
             {
-                LanternControl();
-                yield return new WaitForSeconds(5f);
+                oilDecreaseTime += Time.deltaTime;
+
+                if (oilDecreaseTime > 5)
+                {
+                    oil -= 1;
+                    Debug.Log($"남은 기름 : {oil}");
+                    oilDecreaseTime = 0;
+                    LanternControl();
+                }
             }
         }
     }

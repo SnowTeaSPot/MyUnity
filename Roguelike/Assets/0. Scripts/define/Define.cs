@@ -9,8 +9,6 @@ namespace Roguelike.Utill
             isIdle,
             isWalk,
             isSlide,
-            isJump,
-            isFalling,
             isAttack
         }
 

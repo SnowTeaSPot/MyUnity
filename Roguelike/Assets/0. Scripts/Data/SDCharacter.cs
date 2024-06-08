@@ -14,6 +14,6 @@ public class SDCharacter : ScriptableObject
     public int speed_stat;
     public int crit_stat;
     public int min_damage_stat;
-    public int max_damage_sta;
+    public int max_damage_stat;
     public int evasion_stat;
 }

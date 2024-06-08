@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingleTon<GameManager>
 {
@@ -20,4 +21,15 @@ public class GameManager : SingleTon<GameManager>
         }
     }
 
+    void NowLoadScene()
+    {
+        if (SceneManager.GetActiveScene().name == "StageDemo")
+        {
+
+        }
+        else if (SceneManager.GetActiveScene().name == "FightScene")
+        {
+
+        }
+    }
 }

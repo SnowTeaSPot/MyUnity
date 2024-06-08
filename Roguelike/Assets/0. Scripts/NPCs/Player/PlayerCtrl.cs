@@ -20,9 +20,6 @@ namespace Roguelike.Contents
         SpriteRenderer ren;
         Animator anim;
         Rigidbody2D rig;
-        private bool PisGround = true;
-        private bool PisJump = false;
-        private int JumpCount = 0;
         private int animState;
         public State State { get; set; }
 
@@ -41,7 +38,7 @@ namespace Roguelike.Contents
 
         void Update()
         {
-        PlayerJump();
+            PlayerMovement();
         }
 
         public void SetState(State state)
@@ -59,14 +56,6 @@ namespace Roguelike.Contents
                     break;
 
                 case State.isSlide:
-
-                    break;
-
-                case State.isJump:
-
-                    break;
-
-                case State.isFalling:
 
                     break;
 
@@ -95,7 +84,7 @@ namespace Roguelike.Contents
                 }
             }
 
-            if (x != 0 && PisGround)
+            if (x != 0)
             {
                 SetState(State.isWalk);
             }
@@ -105,37 +94,9 @@ namespace Roguelike.Contents
                 SetState(State.isSlide);
             }
 
-            if (x == 0 && PisGround == true)
+            if (x == 0)
             {
                 SetState(State.isIdle);
-            }
-        }
-
-        void PlayerJump()
-        {
-            if (Input.GetKeyDown(KeyCode.W) && PisGround == true)
-            {
-                rig.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-                PisGround = false;
-                SetState(State.isJump);
-            }
-            
-            if (rig.velocity.y < 0 )
-            {
-                SetState(State.isFalling);
-            }
-
-            if (rig.velocity.y == 0)
-                PisGround = true;
-        }
-
-
-        void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.collider.CompareTag("Platform"))
-            {
-                PisJump = false;
-                PisGround = true;
             }
         }
 
@@ -144,14 +105,6 @@ namespace Roguelike.Contents
             if (collision.collider.CompareTag("Enemy"))
             {
                 SceneManager.LoadScene("FightScene");
-            }
-        }
-
-        void OnCollisionExit2D(Collision2D collision)
-        {
-            if (collision.collider.CompareTag("Platform"))
-            {
-                PisGround = false;
             }
         }
     }
