@@ -12,7 +12,6 @@ public class GameManager : SingleTon<GameManager>
     [SerializeField]
     private SDlist sd = new SDlist();
 
-
     public static SDlist SD
     {
         get
@@ -21,9 +20,10 @@ public class GameManager : SingleTon<GameManager>
         }
     }
 
+
     void NowLoadScene()
     {
-        if (SceneManager.GetActiveScene().name == "StageDemo")
+        if (SceneManager.GetActiveScene().name == "Stage01")
         {
 
         }

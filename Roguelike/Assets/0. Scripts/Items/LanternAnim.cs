@@ -78,7 +78,7 @@ namespace Roguelike.Contents
                 if (oilDecreaseTime > 5)
                 {
                     oil -= 1;
-                    Debug.Log($"남은 기름 : {oil}");
+                    //Debug.Log($"남은 기름 : {oil}");
                     oilDecreaseTime = 0;
                     LanternControl();
                 }

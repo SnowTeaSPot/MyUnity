@@ -16,4 +16,5 @@ public class SDCharacter : ScriptableObject
     public int min_damage_stat;
     public int max_damage_stat;
     public int evasion_stat;
+    public string player_or_enemy;
 }

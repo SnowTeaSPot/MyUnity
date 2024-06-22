@@ -17,5 +17,6 @@ MonoBehaviour:
   speed_stat: 13
   crit_stat: 10
   min_damage_stat: 4
-  max_damage_sta: 7
+  max_damage_stat: 0
   evasion_stat: 7
+  player_or_enemy: Player

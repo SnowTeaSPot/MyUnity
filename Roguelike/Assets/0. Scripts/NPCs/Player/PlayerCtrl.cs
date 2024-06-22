@@ -19,13 +19,13 @@ namespace Roguelike.Contents
         [SerializeField] float rigvely;
         SpriteRenderer ren;
         Animator anim;
-        Rigidbody2D rig;
+        Rigidbody rig;
         private int animState;
         public State State { get; set; }
 
         void Start()
         {
-            rig = GetComponentInChildren<Rigidbody2D>();
+            rig = GetComponentInChildren<Rigidbody>();
             anim = GetComponentInChildren<Animator>();
             ren = GetComponentInChildren<SpriteRenderer>();
             animState = Animator.StringToHash("state");
