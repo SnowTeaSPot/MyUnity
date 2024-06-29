@@ -4,7 +4,6 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     static GameObject container;
-
     // ---싱글톤으로 선언--- //
     static DataManager instance;
     public static DataManager Instance
@@ -57,9 +56,9 @@ public class DataManager : MonoBehaviour
 
         // 올바르게 저장됐는지 확인 (자유롭게 변형)
         print("저장 완료");
-        for (int i = 0; i < data.isUnlock.Length; i++)
+        for (int i = 0; i < data.isUnlockStage.Length; i++)
         {
-            print($"{i}번 챕터 잠금 해제 여부 : " + data.isUnlock[i]);
+            print($"{i}번 챕터 잠금 해제 여부 : " + data.isUnlockStage[i]);
         }
     }
 }

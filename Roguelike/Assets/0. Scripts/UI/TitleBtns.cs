@@ -4,27 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.U2D.Path;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-namespace Roguelike.Title
+namespace Roguelike.Data
 {
-    using Player = Data.GameData;
-    public enum ClassType { Archemist, Knight, Priest, Thief }
+
     public class TitleBtns : MonoBehaviour
     {
-        [SerializeField]
-        public SDCharacter[] sdCharDB;
-        public int mode;
-        public Player pl { get; set; }
+        public int mode = 1;
+
+
         public void NewBtn()
         {
-            CreatePlayerOnce(ClassType.Priest);
-            CreatePlayerOnce(ClassType.Knight);
-            CreatePlayerOnce(ClassType.Thief);
+            CreatePlayer(1000);
+            CreatePlayer(1001);
+            if (GameObject.Find("GameManager").GetComponent<GameManager>().playerCount == 2)
+                SceneManager.LoadScene("Stage01");
         }
 
         public void LoadBtn()
         {
-
+            //파일 저장된 것 불러오는 코드 작성할 것
         }
 
         public void ExitBtn()
@@ -36,12 +36,23 @@ namespace Roguelike.Title
 #endif
         }
 
-        public void CreatePlayerOnce(ClassType inputClassType)
+        public void CreatePlayer(int index)
         {
-            //Resources.Load<>
+            var sdChar = GameManager.SD.sdCharacters.Where(_ => _.index == index).SingleOrDefault();
 
-            //if (pl.index[inputClassType.] != null)
-            //pl.index[sdCharDB[inputClassType].] = 
+            var tmp = GameObject.Find("GameManager").GetComponent<GameManager>();
+            tmp.myStats[0].index = sdChar.index;
+            tmp.myStats[0].playerEXP = 0;
+            tmp.myStats[0].playerLevel = 1;
+            tmp.myStats[0].modeAccuracyStat = mode * sdChar.accuracy_stat;
+            tmp.myStats[0].modeSpeedStat = mode * sdChar.speed_stat;
+            tmp.myStats[0].modeCritStat = mode * sdChar.crit_stat;
+            tmp.myStats[0].modeMinDamageStat = mode * sdChar.min_damage_stat;
+            tmp.myStats[0].modeMaxDamageStat = mode * sdChar.max_damage_stat;
+            tmp.myStats[0].modeEvasionStat = mode * sdChar.evasion_stat;
+            tmp.myStats[0].NpcCamp = sdChar.camp;
+            tmp.playerCount++;
+
         }
     }
 }
